@@ -17,7 +17,7 @@ tray_insert_fudge = 0.25; // [0:0.05:0.75]
 /* [Hidden] */
 
 tray_width = 90;
-tray_length = 90;
+tray_length = 100;
 tray_depth = 5;
 tray_lip_overhang = 10;
 inner_wall_thickness = 5;
@@ -30,12 +30,12 @@ screw_head_depth = 2;
 pcb_depth = 2;
 spacer_center_width = 49;
 spacer_center_length = 58;
-spacer_from_edge_y = (tray_width - spacer_center_width) / 2;
+spacer_from_edge_y = 6;
 spacer_from_edge_x = 10;
-sd_window_width = 40;
+sd_window_width = 35;
 floor_window_width = sd_window_width;
 floor_window_border = (tray_width - floor_window_width) / 2 - 10.5;
-floor_window_length = 12 + tray_length - floor_window_border*2 - inner_wall_thickness;
+floor_window_length =  + tray_length - floor_window_border*2 - inner_wall_thickness;
 
 epsilon = 0.001;
 
@@ -164,7 +164,7 @@ difference() {
 
     // punch a hole in the bottom
     translate([ floor_window_border,
-                floor_window_border,
+                8,
                 -epsilon]) {
         cube([  floor_window_width,
                 floor_window_length,

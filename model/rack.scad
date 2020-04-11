@@ -31,7 +31,7 @@ number_to_fit = 4;
 height = 33.1423; // match the size of a 13 Pi rack
 inner_width = 90;
 outer_width = (450.85 - 20) / number_to_fit;
-length = 90;
+length = 100;
 
 bolt_column_size = 12;
 
@@ -41,13 +41,13 @@ epsilon = 0.001;
 bolt_radius = bolt_size + bolt_hole_fudge;
 
 wall_thickness = (outer_width - inner_width) / 2;
-back_wall_thickness = 5;
+back_wall_thickness = 10;
 floor_depth = 3;
 tray_depth = 5;
 tray_slot_depth = 2.5;
 spacer_depth = 3;
 
-sd_window_width = 40;
+sd_window_width = 65;
 sd_window_height = height - (tray_depth + floor_depth)*2;
 pillar_width = 10;
 floor_window_width = sd_window_width;
@@ -56,118 +56,112 @@ floor_window_length = length - back_wall_thickness - floor_window_border - bolt_
 port_window_width = length - 2*pillar_width;
 pcb_height = floor_depth + tray_depth + spacer_depth;
 
-difference() {
-    union() {
-        // the main block
-        cube([outer_width, length, height]);
-        
-        // the bolt columns
-        translate([0, 0, floor_depth - bolt_column_size]) {
-            cube([outer_width, bolt_column_size, bolt_column_size]);
-        }
-        translate([0, length-bolt_column_size, floor_depth - bolt_column_size]) {
-            cube([outer_width, bolt_column_size, bolt_column_size]);
-        }
-    }
+rotate([0, 180, 0]) {
+  difference() {
+      union() {
+          // the main block
+          cube([outer_width, length, height]);
+          
+          // the bolt columns
+          translate([0, 0, floor_depth - bolt_column_size]) {
+              cube([outer_width, bolt_column_size, bolt_column_size]);
+          }
+          translate([0, length-bolt_column_size, floor_depth - bolt_column_size]) {
+              cube([outer_width, bolt_column_size, bolt_column_size]);
+          }
+      }
 
-    // carve out the interior
-    translate([wall_thickness, -epsilon, floor_depth]) {
-        cube(  [inner_width,
-                length - back_wall_thickness + epsilon,
-                height - floor_depth + epsilon]);
-    }
+      // carve out the interior
+      translate([wall_thickness, -epsilon, floor_depth]) {
+          cube(  [inner_width,
+                  length - back_wall_thickness + epsilon,
+                  height - floor_depth + epsilon]);
+      }
 
-    // punch a hole for the sd card
-    translate([ (outer_width - sd_window_width) / 2,
-                length - back_wall_thickness - epsilon,
-                tray_depth + floor_depth]) {
-        cube([  sd_window_width,
-                back_wall_thickness + 2*epsilon,
-                height - 2*tray_depth - 2*floor_depth]);
-    }
+      // punch a hole for the sd card
+      translate([ (outer_width - sd_window_width) / 2,
+                  length - back_wall_thickness - epsilon,
+                  tray_depth + floor_depth]) {
+          cube([  sd_window_width,
+                  back_wall_thickness + 2*epsilon,
+                  height - 2*tray_depth - 2*floor_depth]);
+      }
 
-    // punch a hole for side port access
-    translate([ -epsilon,
-                pillar_width,
-                pcb_height]) {
-        cube([  outer_width + 2*epsilon,
-                port_window_width,
-                height - pcb_height - tray_depth - floor_depth]);
-    }
+      // punch a hole for side port access
+      translate([ -epsilon,
+                  pillar_width,
+                  pcb_height]) {
+          cube([  outer_width + 2*epsilon,
+                  port_window_width,
+                  height - pcb_height - tray_depth - floor_depth]);
+      }
 
-    // punch a hole in the bottom
-    translate([ wall_thickness + floor_window_border,
-                bolt_column_size,
-                -epsilon]) {
-        cube([  floor_window_width,
-                floor_window_length,
-                floor_depth + 2*epsilon]);
-    }
-    
-    // open a groove that the speaker jack can slide through
-    translate([ wall_thickness - 2,
-                -epsilon,
-                pcb_height]) {
-        cube([  2 + epsilon,
-                pillar_width + 2*epsilon,
-                8]);
-    }
-    
-    // soften the leading edge a bit
-    translate([ wall_thickness,
-                0,
-                floor_depth-0.5]) {
-        rotate([25,0,0]) {
-            cube([  inner_width,
-                    2,
-                    2]);
-        }
-    }
+      // punch a hole in the bottom
+      translate([ wall_thickness + floor_window_border,
+                  bolt_column_size,
+                  -epsilon]) {
+          cube([  floor_window_width,
+                  floor_window_length,
+                  floor_depth + 2*epsilon]);
+      }
+      
+      
+      // soften the leading edge a bit
+      translate([ wall_thickness,
+                  0,
+                  floor_depth-0.5]) {
+          rotate([25,0,0]) {
+              cube([  inner_width,
+                      2,
+                      2]);
+          }
+      }
 
-    // drill the bolt holes
-    for (a=[bolt_column_size/2, length-bolt_column_size/2]) {
-        translate([-epsilon, a, floor_depth - bolt_column_size/2]) {
-            rotate([0, 90, 0]) {
-                cylinder(   h=outer_width + 2*epsilon,
-                            r=bolt_radius,
-                            center=false,
-                            $fn=360);
-            }
-        }
-    }
-    
-    // trim the bolt hole columns
-    for (a=[0, bolt_column_size, length-bolt_column_size, length]) {
-        translate([-epsilon, a, floor_depth - bolt_column_size - 4]) {
-            rotate([45, 0, 0]) {
-                cube([outer_width + 2*epsilon, 5, 5]);
-            }
-        }
-    }
+      // drill the bolt holes
+      for (a=[bolt_column_size/2, length-bolt_column_size/2]) {
+          translate([-epsilon, a, floor_depth - bolt_column_size/2]) {
+              rotate([0, 90, 0]) {
+                  cylinder(   h=outer_width + 2*epsilon,
+                              r=bolt_radius,
+                              center=false,
+                              $fn=360);
+              }
+          }
+      }
+      
+      // trim the bolt hole columns
+      for (a=[0, bolt_column_size, length-bolt_column_size, length]) {
+          translate([-epsilon, a, floor_depth - bolt_column_size - 4]) {
+              rotate([45, 0, 0]) {
+                  cube([outer_width + 2*epsilon, 5, 5]);
+              }
+          }
+      }
 
-    // cut the tray insert slots
-    // note: the tray will be slightly narrower to
-    // give a more comfortable fit. If it is too loose or too tight,
-    // adjust the tray.
-    for (a=[    wall_thickness,
-                inner_width + wall_thickness]) {
-        translate([ a,
-                    -epsilon,
-                    floor_depth + tray_depth/2]) {
-            intersection() {
-                rotate([0, 45, 0]) {
-                    translate([-tray_depth/sqrt(2)/2, 0, -tray_depth/sqrt(2)/2]) {
-                        cube([  tray_depth/sqrt(2),
-                                length - back_wall_thickness + epsilon,
-                                tray_depth/sqrt(2)]);
-                    }
-                }
-                translate([-tray_depth/2+0.5, 0, -tray_depth/2]) {
-                    cube([  tray_depth-1,
-                            length - back_wall_thickness + epsilon,
-                            tray_depth]);
-                }
-            }
-        }
-    }
+      // cut the tray insert slots
+      // note: the tray will be slightly narrower to
+      // give a more comfortable fit. If it is too loose or too tight,
+      // adjust the tray.
+      for (a=[    wall_thickness,
+                  inner_width + wall_thickness]) {
+          translate([ a,
+                      -epsilon,
+                      floor_depth + tray_depth/2]) {
+              intersection() {
+                  rotate([0, 45, 0]) {
+                      translate([-tray_depth/sqrt(2)/2, 0, -tray_depth/sqrt(2)/2]) {
+                          cube([  tray_depth/sqrt(2),
+                                  length - back_wall_thickness + epsilon,
+                                  tray_depth/sqrt(2)]);
+                      }
+                  }
+                  translate([-tray_depth/2+0.5, 0, -tray_depth/2]) {
+                      cube([  tray_depth-1,
+                              length - back_wall_thickness + epsilon,
+                              tray_depth]);
+                  }
+              }
+          }
+      }
+  }
 }
