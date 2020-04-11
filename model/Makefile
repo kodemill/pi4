@@ -1,16 +1,17 @@
 .PHONY = clean all
 
+# OUT := 
 SCAD_SRCS := $(wildcard *.scad)
-STLS := $(SCAD_SRCS:%.scad=%.stl)
+OUT := $(SCAD_SRCS:%.scad=%.3mf)
 
-all: ${STLS}
-	@echo "Generating stls..."
+all: ${OUT}
+	@echo "Generating output files..."
 
-%.stl: %.scad
+%.3mf: %.scad
 	openscad -o $@ $<
 
 clean:
 	@echo "Cleaning up..."
-	rm -rvf *.stl
+	rm -rvf *.3mf
 
 
