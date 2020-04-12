@@ -56,7 +56,7 @@ floor_window_length = length - back_wall_thickness - floor_window_border - bolt_
 port_window_width = length - 2*pillar_width;
 pcb_height = floor_depth + tray_depth + spacer_depth;
 
-rotate([0, 180, 0]) {
+// rotate([0, 180, 0]) {
   difference() {
       union() {
           // the main block
@@ -164,4 +164,4 @@ rotate([0, 180, 0]) {
           }
       }
   }
-}
+// }

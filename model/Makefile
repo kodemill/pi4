@@ -2,16 +2,16 @@
 
 # OUT := 
 SCAD_SRCS := $(wildcard *.scad)
-OUT := $(SCAD_SRCS:%.scad=%.amf)
+OUT := $(SCAD_SRCS:%.scad=%.stl)
 
 all: ${OUT}
 	@echo "Generating output files..."
 
-%.amf: %.scad
+%.stl: %.scad
 	openscad -o $@ $<
 
 clean:
 	@echo "Cleaning up..."
-	rm -rvf *.amf
+	rm -rvf *.stl
 
 

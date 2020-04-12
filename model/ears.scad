@@ -44,7 +44,7 @@ bolt_column_size = 12;
 floor_depth = 3;
 
 width = 33.1423 + bolt_column_size - floor_depth;
-length = 90;
+length = 100;
 height = 5;
 frame_width = 15.875;
 distance_to_frame = 10;
