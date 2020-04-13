@@ -64,7 +64,7 @@ difference() {
                     
                     // cut away the inside to make it a shell
                     translate([ tray_width/2,
-                                -tray_length*0.5 + 4,
+                                -tray_length*0.5 + 3.2,
                                 -epsilon]) {
                         cylinder(
                             h=tray_depth + spacer_depth + pcb_depth + 2*epsilon,
