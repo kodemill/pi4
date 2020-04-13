@@ -74,11 +74,7 @@ difference() {
                             $fn=360);
                     }
                     
-                    // cut away space for network plug
-                    translate([-75, tray_length-15, tray_depth]) {
-                        cube([100, 30,tray_depth + spacer_depth + pcb_depth +10]);
-                    }
-                    
+  
                     translate([ tray_width,
                                 -tray_length,
                                 -epsilon]) {
@@ -101,7 +97,6 @@ difference() {
                         cube([tray_width - 2*epsilon, 2*sqrt(2), 6]);
                     }
                 }
-                
             }
             
             // cut away the ears of the tray
@@ -203,5 +198,11 @@ difference() {
                 center=false,
                 $fn=360);
         }
+    }
+    
+                  
+      // cut away space for network plug
+    translate([-75, tray_length-15, tray_depth]) {
+        cube([100, 30,tray_depth + spacer_depth + pcb_depth +10]);
     }
 }
