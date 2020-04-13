@@ -17,10 +17,10 @@ tray_insert_fudge = 0.25; // [0:0.05:0.75]
 /* [Hidden] */
 
 tray_width = 90;
-tray_length = 100;
+tray_length = 97;
 tray_depth = 5;
 tray_lip_overhang = 10;
-inner_wall_thickness = 5;
+inner_wall_thickness = 17;
 spacer_depth = 3;
 spacer_outer_radius = 3;
 
@@ -31,10 +31,10 @@ pcb_depth = 2;
 spacer_center_width = 49;
 spacer_center_length = 58;
 spacer_from_edge_y = 6;
-spacer_from_edge_x = 10;
-sd_window_width = 35;
+spacer_from_edge_x = 4.6;
+sd_window_width = 38;
 floor_window_width = sd_window_width;
-floor_window_border = (tray_width - floor_window_width) / 2 - 10.5;
+floor_window_border = (tray_width - floor_window_width) / 2 - 15.9;
 floor_window_length =  + tray_length - floor_window_border*2 - inner_wall_thickness;
 
 epsilon = 0.001;
@@ -64,7 +64,7 @@ difference() {
                     
                     // cut away the inside to make it a shell
                     translate([ tray_width/2,
-                                -tray_length*0.5 + 5.4,
+                                -tray_length*0.5 + 4,
                                 -epsilon]) {
                         cylinder(
                             h=tray_depth + spacer_depth + pcb_depth + 2*epsilon,
