@@ -1,8 +1,7 @@
 .PHONY = clean all
 
-# OUT := 
-SCAD_SRCS := $(wildcard *.scad)
-OUT := $(SCAD_SRCS:%.scad=%.stl)
+SRC := $(wildcard *.scad)
+OUT := $(SRC:%.scad=%.stl)
 
 all: ${OUT}
 	@echo "Generating output files..."
