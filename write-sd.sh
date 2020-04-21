@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eu pipefail
 
 source ./util.sh
 
@@ -22,29 +22,35 @@ read -r -p "The device ${USB_DEV} will be wiped! Continue? [yY]:" WIPE_OK
 umount ${USB_DEV} ${PART_BOOT} ${PART_ROOT} || true
 
 info "Partitioning $USB_DEV..."
-parted --script "${USB_DEV}" \
-  mklabel gpt \
-  mkpart primary fat32 1MiB 100MiB \
+parted --script "${USB_DEV}" -- \
+  mklabel msdos \
+  mkpart primary fat32 1 128MiB \
   set 1 boot on \
-  mkpart primary ext4 100MiB 100% #1>/dev/null
+  mkpart primary ext4 128MiB 100% \
+  print
 
 info "Creating mount directory ${WORKDIR}"
 mkdir -p "${WORKDIR}"
 pushd "${WORKDIR}"
 
+info "Cleaning up..."
+rm -rf boot root
+
 info "Create and mount the FAT filesystem: ${PART_BOOT}"
-mkfs.vfat "${PART_BOOT}" -F 32 -n BOOT #1>/dev/null
+mkfs.vfat -F32 "${PART_BOOT}"
 mkdir boot
 mount "${PART_BOOT}" boot
 
 info "Create and mount the ext4 filesystem: ${PART_ROOT}"
-mkfs.ext4 "${PART_ROOT}" -F -L root #1>/dev/null
+mkfs.ext4 -F "${PART_ROOT}"
 mkdir root
 mount "${PART_ROOT}" root
 
 info "Download and extract the root filesystem"
 arch_rpi="ArchLinuxARM-rpi-4-latest.tar.gz"
-[[ ! -f "${arch_rpi}" ]] && wget -O "${arch_rpi}" http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz 
+alarm_src=hu.mirror.archlinuxarm.org
+# alarm_src=os.archlinuxarm.org
+[[ ! -f "${arch_rpi}" ]] && wget -O "${arch_rpi}" "http://${alarm_src}/os/ArchLinuxARM-rpi-4-latest.tar.gz" 
 bsdtar -xpf "${arch_rpi}" -C root
 sync
 
